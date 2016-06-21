@@ -54,7 +54,10 @@ Bartender.prototype.displayQuestion = function(){
 	$(".bartender-form").html("");
 	//TODO - just update the text, leave the input on the page
 	//adds question text to DOM with input field and submit button
-	$(".bartender-form").html(text+"<input class=\"bartender-input\" type=\"text\" autofocus><input type=\"submit\">");
+$(".bartender-form").html("<h2>"+text+"</h2>"+
+	"<input class=\"bartender-input\" type=\"radio\" value=\"yes\">Yarr!<br>"+
+	"<input class=\"bartender-input\" type=\"radio\" value=\"no\">No<br>"+
+	"<input class=\"btn btn-small\" type=\"submit\">");
 }
 
 //incrementQuestion method - take no parameters
@@ -70,21 +73,21 @@ Bartender.prototype.recordResponse = function(resp){
 	//sets default success value
 	var success = false;
 		//if valid yes input
-		if(resp === "y"){
+		if(resp === "yes"){
 			//set the question's preference to true
 			this.questions[i].preference = true;
 			//set success flag to indicate a successful translation
 			success = true;
 		}
 		//if valid no input
-		else if(resp === "n"){
+		else if(resp === "no"){
 			//set the question's preference to false
 			this.questions[i].preference = false;
 			//set success flag to indicate a successful translation
 			success = true;
 		}
 		//if invalid input, ask user to submit valid response (do not set success flag)
-		else alert("Please just respond \"y\" or \"n\" for now");
+		else alert("Arrgh ye gotta pick yer poison");
 
 	return success;
 }
@@ -103,7 +106,7 @@ Bartender.prototype.createDrink = function(){
 			result += pantry.flavors[flavor].ingredients[rand].name+" ";
 		}
 	});
-	$(".bartender-form").html("Here's your drink: "+result);
+	$(".bartender-form").html("Here's your drink:<h2>"+result+"</h2>");
 
 }
 
@@ -142,7 +145,7 @@ $(".bartender-form").submit(function(event){
 	//prevent the page from refreshing
 	event.preventDefault();
 	//get the response from the text box
-	var response = $(this).children(".bartender-input").val();
+	var response = $(this).children(".bartender-input:checked").val();
 	//record the response and store the return value
 	var success = blackbeard.recordResponse(response);
 	//if the record was successful ("y" or "n")
