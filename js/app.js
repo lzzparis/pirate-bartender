@@ -41,7 +41,6 @@ Bartender.prototype.displayQuestion = function(){
 	$(".bartender-form").html("");
 	//todo - just update the text, leave the input on the page
 	$(".bartender-form").html(text+"<input class=\"bartender-input\" type=\"text\" autofocus><input type=\"submit\">");
-	console.log(text);
 }
 
 Bartender.prototype.incrementQuestion = function(){
@@ -66,7 +65,18 @@ Bartender.prototype.recordResponse = function(resp){
 
 Bartender.prototype.createDrink = function(){
 	$(".bartender-form").html("");
-	$(".bartender-form").html("Here's your drink");
+
+	var result = "";
+	this.questions.forEach(function(oneQuestion){
+		if (oneQuestion.preference){
+			var flavor = oneQuestion.flavor;
+			var bound = pantry.flavors[flavor].ingredients.length;
+			var rand = Math.floor(Math.random() * bound);
+			result += pantry.flavors[flavor].ingredients[rand].name+" ";
+		}
+	});
+	$(".bartender-form").html("Here's your drink: "+result);
+
 }
 
 
@@ -106,7 +116,6 @@ $(".bartender-form").submit(function(event){
 	var response = $(this).children(".bartender-input").val();
 	//record the response and store the return value
 	var success = blackbeard.recordResponse(response);
-	console.log(blackbeard.questionNumber+" "+success);
 	//if the record was successful ("y" or "n")
 	if (success){
 		//increase the question counter by 1
@@ -121,8 +130,6 @@ $(".bartender-form").submit(function(event){
 	//else do nothing
 });
 
-console.log(pantry);
-console.log(blackbeard);
 
 });
 
